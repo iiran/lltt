@@ -1,0 +1,25 @@
+GET http://localhost:44540/api/v1/users?page=1
+Accept: application/json
+
+###
+
+GET http://localhost:44540/api/v1/users/yiranfeng/displayname
+Accept: application/json
+
+###
+
+GET http://localhost:44540/api/v1/users/yiranfeng
+Accept: application/json
+
+###
+
+POST http://localhost:44540/api/v1/users
+Accept: application/json
+Content-Type: application/json
+
+{
+  "username": "teqqsssggst1",
+  "email": "tesqggqt1@qq.com"
+}
+
+###

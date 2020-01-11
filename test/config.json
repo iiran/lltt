@@ -1,0 +1,71 @@
+{
+  "address": "127.0.0.1",
+  "port": 44540,
+  "mode": "debug",
+  "page_size": 10,
+  "jwt_secret": "123456",
+  "write_timeout": 6000,
+  "database": [
+    {
+      "name": "leas",
+      "dialect": "postgres",
+      "username": "yiranfeng",
+      "password": "",
+      "address": "127.0.0.1",
+      "port": 5432,
+      "database": "leas",
+      "table_link": [
+        {
+          "from": "public.users",
+          "to": "users"
+        },
+        {
+          "from": "public.posts",
+          "to": "posts"
+        },
+        {
+          "from": "public.post_change",
+          "to": "post_change"
+        },
+        {
+          "from": "public.post_tag",
+          "to": "post_tag"
+        },
+        {
+          "from": "public.reply",
+          "to": "reply"
+        },
+        {
+          "from": "public.short_message",
+          "to": "message"
+        },
+        {
+          "from": "public.groups",
+          "to": "groups"
+        }
+      ]
+    },
+    {
+      "name": "daily",
+      "dialect": "postgres",
+      "username": "yiranfeng",
+      "password": "",
+      "address": "127.0.0.1",
+      "port": 5432,
+      "database": "yiran_daily",
+      "table_link": [
+        {
+          "from": "public.account",
+          "to": "account"
+        }
+      ]
+    }
+  ],
+  "log": {
+    "file_path": "logs/",
+    "file_name": "lltt",
+    "file_ext": "log",
+    "line_prefix": "lltt: ",
+    "trace_depth": 2
+  }
+}
