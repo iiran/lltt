@@ -24,7 +24,6 @@ type dbConfig struct {
 	Username       string
 	Password       string
 	Lang           Language
-	TableLink      map[string]string
 }
 
 const (
@@ -66,15 +65,6 @@ func newDBConfigFromSetting(db setting.ServerConfigDB) (dbc dbConfig) {
 	dbc.Username = db.Username
 	dbc.Password = db.Password
 	dbc.Lang = getLanguage(db.Dialect)
-
-	dbc.TableLink = make(map[string]string)
-	for _, l := range db.TableLink {
-		_, exist := dbc.TableLink[l.From]
-		if exist {
-			panic(errors.GetMsg(errors.DB_CONFIG_DUP_TABLELINK))
-		}
-		dbc.TableLink[l.From] = l.To
-	}
 	return
 }
 

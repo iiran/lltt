@@ -4,45 +4,29 @@
   "mode": "debug",
   "page_size": 10,
   "jwt_secret": "123456",
+  "session": {
+    "secret": "abcdefg",
+    "count": 10000
+  },
   "write_timeout": 6000,
-  "use_multi_db": true,
   "database": [
     {
-      "name": "leas",
+      "name": "pqs",
       "dialect": "postgres",
       "username": "yiranfeng",
       "password": "",
       "address": "127.0.0.1",
       "port": 5432,
-      "database": "leas",
-      "table_link": [
-        {
-          "from": "public.users",
-          "to": "users"
-        },
-        {
-          "from": "public.posts",
-          "to": "posts"
-        },
-        {
-          "from": "public.post_change",
-          "to": "post_change"
-        },
-        {
-          "from": "public.post_tag",
-          "to": "post_tag"
-        }
-      ]
+      "database": "leas"
     },
     {
-      "name": "myredis",
+      "name": "rds",
       "dialect": "redis",
       "username": "",
       "password": "",
       "address": "localhost",
       "port": 6379,
-      "database": "",
-      "table_link": []
+      "database": ""
     }
   ],
   "log": {

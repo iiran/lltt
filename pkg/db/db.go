@@ -10,10 +10,10 @@ import (
 var m Manager
 
 type Manager interface {
-	Connect(cfg dbConfig) error
-	Disconnect(DBName string) error
-	Exec(sql string, args ...interface{}) (Result interface{}, err error)
-	Query(sql string, args ...interface{}) (resultRows *sql.Rows, err error)
+	Connect(dbCfg dbConfig) error
+	Disconnect(dbName string) error
+	Exec(dbName string, sql string, args ...interface{}) (Result interface{}, err error)
+	Query(dbName string, sql string, args ...interface{}) (resultRows *sql.Rows, err error)
 }
 
 // Setup all database conn
@@ -33,11 +33,11 @@ func Setup(dbs *[]setting.ServerConfigDB) {
 }
 
 // Exec -
-func Exec(sql string, args ...interface{}) (interface{}, error) {
-	return m.Exec(sql, args...)
+func Exec(dbName string, sql string, args ...interface{}) (interface{}, error) {
+	return m.Exec(dbName, sql, args...)
 }
 
 // Query should always put the str into args slice, do not hardcoded into sql!
-func Query(sql string, args ...interface{}) (*sql.Rows, error) {
-	return m.Query(sql, args...)
+func Query(dbName string, sql string, args ...interface{}) (*sql.Rows, error) {
+	return m.Query(dbName, sql, args...)
 }

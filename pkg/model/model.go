@@ -17,6 +17,10 @@ type UserMould struct {
 	Email    string `json:"email"`
 }
 
+type UserLoginMould struct {
+	Username string `json:"username"`
+}
+
 type ReplyMould struct {
 	ReplyType int32
 	ReplyFrom int64
@@ -92,4 +96,14 @@ type PostMould struct {
 	Title    string `json:"title"`
 	Describe string `json:"describe"`
 	Content  string `json:"content"`
+}
+
+type UserSessionData struct {
+	UserID int64
+}
+
+type UserSession struct {
+	Data       UserSessionData
+	CreateTime time.Time
+	ExpireTime time.Time
 }

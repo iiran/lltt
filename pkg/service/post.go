@@ -13,9 +13,9 @@ func ListPosts(offset int64, limit int64) (posts []model.Post, err error) {
 	}
 	var (
 		rows *sql.Rows
-		q    string = `select id, title, describe, content, created_at, creator, author, tag_name from posts limit ? offset ?`
+		q    = `select id, title, describe, content, created_at, creator, author, tag_name from posts limit ? offset ?`
 	)
-	if rows, err = db.Query(q, limit, offset); err != nil {
+	if rows, err = db.Query(`pqs`, q, limit, offset); err != nil {
 		return nil, errors.ErrAppend(err, errors.DB_SELECT_ERR)
 	}
 	defer rows.Close()
@@ -38,9 +38,9 @@ func ListUserPosts(author int64, offset int64, limit int64) (posts []model.Post,
 	}
 	var (
 		rows *sql.Rows
-		q    string = `select id, title, describe, content, created_at, creator, tag_name from posts where author = ? limit ? offset ?`
+		q    = `select id, title, describe, content, created_at, creator, tag_name from posts where author = ? limit ? offset ?`
 	)
-	if rows, err = db.Query(q, author, limit, offset); err != nil {
+	if rows, err = db.Query(`pqs`, q, author, limit, offset); err != nil {
 		return nil, errors.ErrAppend(err, errors.DB_SELECT_ERR)
 	}
 	defer rows.Close()
@@ -64,7 +64,7 @@ func QueryPost(id int64) (post model.Post, err error) {
 		_tagName sql.NullString
 		q        = `select title, describe, content, created_at, creator, author, tag_name from posts where id = ?`
 	)
-	if rows, err = db.Query(q, id); err != nil {
+	if rows, err = db.Query(`pqs`, q, id); err != nil {
 		return post, errors.ErrAppend(err, errors.DB_SELECT_ERR)
 	}
 	defer rows.Close()
@@ -79,12 +79,13 @@ func QueryPost(id int64) (post model.Post, err error) {
 	return
 }
 
-func CreatePost(creator int64, data model.PostMould) (post model.PostMould, err error) {
+func CreatePost(creator int64, data model.PostMould) (created model.PostMould, err error) {
 	var (
 		q = `insert into posts (title, describe, content, creator, author) values (?, ?, ?, ?, ?)`
 	)
-	if _, err = db.Exec(q, data.Title, data.Describe, data.Content, creator, creator); err != nil {
-		return post, errors.ErrAppend(err, errors.DB_INSERT_ERR)
+	if _, err = db.Exec(`pqs`, q, data.Title, data.Describe, data.Content, creator, creator); err != nil {
+		return created, errors.ErrAppend(err, errors.DB_INSERT_ERR)
 	}
-	return post, nil
+	created.Content, created.Describe, created.Title = data.Content, data.Describe, data.Title
+	return created, nil
 }

@@ -63,7 +63,27 @@ func CreateUser(c *gin.Context) {
 		return
 	}
 	createUser.Username, createUser.Email = user.Username, user.Email
+
 	util.SetOk(c, http.StatusCreated, createUser)
+}
+
+func Login(c *gin.Context) {
+	var (
+		err   error
+		login model.UserLoginMould
+	)
+	if err = c.BindJSON(&login); err != nil {
+		util.SetErr(c, http.StatusBadRequest, errors.POST_DATA_STRUCT_INVALID)
+		return
+	}
+	id, err := service.GetUserID(login.Username)
+	if err != nil {
+		util.SetErr(c, http.StatusBadRequest, errors.NOT_EXIST)
+		return
+	}
+
+	util.CreateUserSessionCookie(c, core.DEFAULT_LOGIN_COOKIE_AGE_HOUR, model.UserSessionData{UserID: id})
+	util.SetOk(c)
 }
 
 func CreateUserReply(c *gin.Context) {
@@ -78,11 +98,11 @@ func CreateUserReply(c *gin.Context) {
 		util.SetErr(c, http.StatusBadRequest, errors.POST_DATA_STRUCT_INVALID)
 		return
 	}
-	if targetUserID = c.GetInt64(core.STORE_OPERAND_USERID); targetUserID <= 0 {
+	if targetUserID = c.GetInt64(core.STORE_OPERAND_USERID); targetUserID < core.MIN_USERID {
 		util.SetErr(c, http.StatusBadRequest, errors.GET_OPERAND_USER_FAIL)
 		return
 	}
-	if operatorID = c.GetInt64(core.STORE_OPERATOR_USERID); operatorID <= 0 {
+	if operatorID = c.GetInt64(core.STORE_OPERATOR_USERID); operatorID < core.MIN_USERID {
 		util.SetErr(c, http.StatusUnauthorized, errors.AUTH_FAIL)
 		return
 	}
@@ -100,7 +120,7 @@ func GetUserReplies(c *gin.Context) {
 		err          error
 		oprandUserID int64
 	)
-	if oprandUserID = c.GetInt64(core.STORE_OPERAND_USERID); oprandUserID <= 0 {
+	if oprandUserID = c.GetInt64(core.STORE_OPERAND_USERID); oprandUserID < core.MIN_USERID {
 		util.SetErr(c, http.StatusBadRequest, errors.GET_OPERAND_USER_FAIL)
 	}
 	offset, limit := util.GetOffsetFromPage(c)

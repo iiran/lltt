@@ -12,34 +12,7 @@ import (
 	"strings"
 )
 
-// get table name from simple sql ( table name appear only once)
-//if table name contains of dot, except the last part will be ignored
-var (
-	tableNameOfQueryRegex  = regexp.MustCompile("\\s+[Ff][Rr][Oo][Mm]\\s+(?:\\w+\\.)*(\\w+)($|\\s+([Ww][Hh][Ee][Rr][Ee]|[Jj][Oo][Ii][Nn]|[Ss][Tt][Aa][Rr][Tt]\\s+[Ww][Ii][Tt][Hh]|[Oo][Rr][Dd][Ee][Rr]\\s+[Bb][Yy]|[Gg][Rr][Oo][Uu][Pp]\\s+[Bb][Yy]|[Ll][Ii][Mm][Ii][Tt]|[Oo][Ff][Ff][Ss][Ee][Tt]))")
-	tableNameOfDeleteRegex = regexp.MustCompile("\\s+[Ff][Rr][Oo][Mm]\\s+(?:\\w+\\.)*(\\w+)($|\\s+[Ww][Hh][Ee][Rr][Ee])")
-	tableNameOfUpdateRegex = regexp.MustCompile("[Uu][Pp][Dd][Aa][Tt][Ee]\\s+(?:\\w+\\.)*(\\w+)\\s+([Ss][Ee][Tt]\\s+)")
-	tableNameOfInsertRegex = regexp.MustCompile("[Ii][Nn][Ss][Ee][Rr][Tt]\\s+[Ii][Nn][Tt][Oo]\\s+(?:\\w+\\.)*(\\w+)\\s+\\(.*?\\)\\s+([Vv][Aa][Ll][Uu][Ee][Ss])\\s+")
-)
 
-func getRegex(sql string) *regexp.Regexp {
-	var execRegex *regexp.Regexp
-
-	switch strings.ToUpper(strings.TrimSpace(sql))[:6] {
-	case THIN_UPDATE:
-		execRegex = tableNameOfUpdateRegex
-	case THIN_INSERT:
-		execRegex = tableNameOfInsertRegex
-	case THIN_SELECT:
-		execRegex = tableNameOfQueryRegex
-	case THIN_DELETE:
-		execRegex = tableNameOfDeleteRegex
-	case THIN_XREDIS:
-		execRegex = nil
-	default:
-		execRegex = nil
-	}
-	return execRegex
-}
 
 const (
 	SOFT_AND      = " AND "

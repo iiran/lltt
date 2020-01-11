@@ -11,7 +11,7 @@ func CreateReply(mould model.ReplyMould) (err error) {
 	var (
 		q = `insert into reply (content, author, reply_type, reply_to) values (?, ?, ?, ?)`
 	)
-	if _, err = db.Exec(q, mould.Content, mould.ReplyFrom, mould.ReplyType, mould.ReplyTo); err != nil {
+	if _, err = db.Exec(`pqs`, q, mould.Content, mould.ReplyFrom, mould.ReplyType, mould.ReplyTo); err != nil {
 		return errors.ErrAppend(err, errors.DB_INSERT_ERR)
 	}
 	return nil
@@ -22,7 +22,7 @@ func GetReply(replyID int64) (repl model.Reply, err error) {
 		rows *sql.Rows
 		q    = `select content, created_at, author, reply_to from reply where id = ?`
 	)
-	if rows, err = db.Query(q, replyID); err != nil {
+	if rows, err = db.Query(`pqs`, q, replyID); err != nil {
 		return repl, errors.ErrAppend(err, errors.DB_SELECT_ERR)
 	}
 	defer rows.Close()
@@ -41,7 +41,7 @@ func GetRepliesFrom(replyType int, from int64, offset int64, limit int64) (repls
 		rows *sql.Rows
 		q    = `select id, content, created_at, reply_to from reply where reply_type = ? and author = ? limit ? offset ?`
 	)
-	if rows, err = db.Query(q, replyType, from, limit, offset); err != nil {
+	if rows, err = db.Query(`pqs`, q, replyType, from, limit, offset); err != nil {
 		return nil, errors.ErrAppend(err, errors.DB_SELECT_ERR)
 	}
 	defer rows.Close()
@@ -61,7 +61,7 @@ func GetRepliesTo(replyType int, to int64, offset int64, limit int64) (repls []m
 		rows *sql.Rows
 		q    = `select id, content, created_at, author from reply where reply_type = ? and reply_to = ? limit ? offset ?`
 	)
-	if rows, err = db.Query(q, replyType, to, limit, offset); err != nil {
+	if rows, err = db.Query(`pqs`, q, replyType, to, limit, offset); err != nil {
 		return nil, errors.ErrAppend(err, errors.DB_SELECT_ERR)
 	}
 	defer rows.Close()

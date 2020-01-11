@@ -13,6 +13,7 @@ import (
 )
 
 func Bind(r *gin.RouterGroup) {
+	r.POST(fmt.Sprintf("/login"), userCtl.Login)
 	users := r.Group("/users", user.Store())
 	{
 		users.POST(fmt.Sprintf(":%s/replies", core.PARAM_USERNAME), userCtl.CreateUserReply)

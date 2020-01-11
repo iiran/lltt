@@ -53,10 +53,14 @@ func SetErr(c *gin.Context, code int, extra ...interface{}) {
 	)
 	if len(extra) >= 1 {
 		m := extra[0]
-		if reflect.TypeOf(m).Kind() == reflect.String {
+		mType := reflect.TypeOf(m)
+
+		if mType.Kind() == reflect.String {
 			msg = m.(string)
-		} else {
-			msg = errors.GetMsg(m.(int))
+		} else if i, ok := m.(int); ok {
+			msg = errors.GetMsg(i)
+		} else if e, ok := m.(error); ok {
+			msg = e.Error()
 		}
 	}
 	c.JSON(code, core.ErrorResponse{Detail: msg})

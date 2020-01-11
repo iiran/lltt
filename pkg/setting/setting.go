@@ -6,22 +6,15 @@ import (
 	"io/ioutil"
 )
 
-// ServerConfigDBTableLink is table link field in database config
-type ServerConfigDBTableLink struct {
-	From string `json:"from"`
-	To   string `json:"to"`
-}
-
 // ServerConfigDB is database field in global config
 type ServerConfigDB struct {
-	Name      string                    `json:"name"`
-	Dialect   string                    `json:"dialect"`
-	Username  string                    `json:"username"`
-	Password  string                    `json:"password"`
-	Address   string                    `json:"address"`
-	Port      int64                     `json:"port"`
-	Database  string                    `json:"database"`
-	TableLink []ServerConfigDBTableLink `json:"table_link"`
+	Name     string `json:"name"`
+	Dialect  string `json:"dialect"`
+	Username string `json:"username"`
+	Password string `json:"password"`
+	Address  string `json:"address"`
+	Port     int64  `json:"port"`
+	Database string `json:"database"`
 }
 
 type ServerConfigLog struct {
@@ -32,17 +25,22 @@ type ServerConfigLog struct {
 	TraceDepth int    `json:"trace_depth"`
 }
 
+type ServerConfigSession struct {
+	Secret string `json:"secret"`
+	Count  int64  `json:"count"`
+}
+
 // ServerConfig is global config
 type ServerConfig struct {
-	Address      string           `json:"address"`
-	Port         int64            `json:"port"`
-	Mode         string           `json:"mode"`
-	PageSize     int64            `json:"page_size"`
-	JWTSecret    string           `json:"jwt_secret"`
-	WriteTimeout int64            `json:"write_timeout"`
-	UseMultiDB   bool             `json:"use_multi_db"`
-	Database     []ServerConfigDB `json:"database"`
-	Log          ServerConfigLog  `json:"log"`
+	Address      string              `json:"address"`
+	Port         int64               `json:"port"`
+	Mode         string              `json:"mode"`
+	PageSize     int64               `json:"page_size"`
+	JWTSecret    string              `json:"jwt_secret"`
+	WriteTimeout int64               `json:"write_timeout"`
+	Session      ServerConfigSession `json:"session"`
+	Database     []ServerConfigDB    `json:"database"`
+	Log          ServerConfigLog     `json:"log"`
 }
 
 type RunMode string
@@ -89,4 +87,11 @@ func GetMode() (m string) {
 		return string(DebugMode)
 	}
 	return Cfg.Mode
+}
+
+func GetSessionConfig() *ServerConfigSession {
+	if Cfg == nil {
+		return nil
+	}
+	return &Cfg.Session
 }

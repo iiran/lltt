@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/iiran/lltt/pkg/logger"
+	"github.com/iiran/lltt/pkg/service/simple_store"
 )
 
 import "github.com/iiran/lltt/pkg/setting"
@@ -20,6 +21,7 @@ func main() {
 	setting.Setup(configPath)
 	db.Setup(setting.GetDBConfig())
 	logger.Setup(setting.GetLogConfig())
+	simple_store.Setup(setting.GetSessionConfig())
 	gin.SetMode(setting.GetMode())
 	r := router.Init()
 	r.Use(gin.Logger())

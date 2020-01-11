@@ -120,3 +120,5 @@ create index groups_name_index on public.groups(name);
 
 create index groups_weight_index on public.groups(weight);
 ---group end
+
+insert into users (username) values ('yiranfeng');

@@ -1,25 +1,77 @@
-GET http://localhost:44540/api/v1/users?page=1
-Accept: application/json
-
-###
-
-GET http://localhost:44540/api/v1/users/yiranfeng/displayname
-Accept: application/json
-
-###
-
-GET http://localhost:44540/api/v1/users/yiranfeng
-Accept: application/json
-
-###
-
+# 创建user
 POST http://localhost:44540/api/v1/users
 Accept: application/json
 Content-Type: application/json
 
 {
-  "username": "teqqsssggst1",
-  "email": "tesqggqt1@qq.com"
+  "username": "yiranfeng",
+  "email": "percivalstr@163.com"
 }
+
+###
+# 查询这个用户
+GET http://localhost:44540/api/v1/users/yiranfeng
+Accept: application/json
+
+###
+# 查询这个用户的用户名
+GET http://localhost:44540/api/v1/users/yiranfeng/displayname
+Accept: application/json
+
+###
+# 查询用户列表
+GET http://localhost:44540/api/v1/users?page=1
+Accept: application/json
+
+###
+# 给用户留言
+POST http://localhost:44540/api/v1/users/yiranfeng/replies
+Content-Type: application/json
+
+{
+ "content": "reply content to yiranfeng"
+}
+
+###
+# 查看用户的留言板
+GET http://localhost:44540/api/v1/users/yiranfeng/replies?page=1
+
+###
+# 用户登录
+POST http://localhost:44540/api/v1/login
+Accept: application/json
+Content-Type: application/json
+
+{
+  "username": "yiranfeng"
+}
+
+###
+# 创建帖子
+POST http://localhost:44540/api/v1/posts
+Content-Type: application/json
+
+{
+  "title": "test title",
+  "describe": "test describe",
+  "content": "test content"
+}
+
+###
+# 获取帖子列表
+GET http://localhost:44540/api/v1/posts?page=1
+Accept: application/json
+
+###
+# 获取帖子
+GET http://localhost:44540/api/v1/posts/3
+Accept: application/json
+
+###
+
+###
+# 创建回复
+POST http://localhost:44540/api/v1/posts/3
+
 
 ###
